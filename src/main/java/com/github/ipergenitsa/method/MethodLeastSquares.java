@@ -13,6 +13,12 @@ public class MethodLeastSquares {
     private double[] experimentalDataY;
     private double[] rightPart;
 
+    public double[] getSolution() {
+        return solution;
+    }
+
+    private double[] solution;
+
     public RealMatrix getMatrix() {
         return matrix;
     }
@@ -24,9 +30,12 @@ public class MethodLeastSquares {
         this.experimentalDataX = experimentalDataX;
         this.experimentalDataY = experimentalDataY;
         matrix = new Array2DRowRealMatrix(degreeOfPolynomial + 1, degreeOfPolynomial + 1);
+        fillMatrix();
+        computeY();
+        this.solution = solve().toArray();
     }
 
-    public void fillMatrix() {
+    private void fillMatrix() {
         for (int j = 0; j < degreeOfPolynomial + 1; j++) {
             for (int i = 0; i < degreeOfPolynomial + 1; i++) {
                 double entryMatrix = 0;
@@ -38,7 +47,7 @@ public class MethodLeastSquares {
         }
     }
 
-    public void computeY() {
+    private void computeY() {
         rightPart = new double[degreeOfPolynomial + 1];
 
         for (int i = 0; i < degreeOfPolynomial + 1; i++) {
@@ -49,7 +58,7 @@ public class MethodLeastSquares {
         }
     }
 
-    public RealVector solve() {
+    private RealVector solve() {
         DecompositionSolver solver = new LUDecomposition(matrix).getSolver();
         RealVector constants = new ArrayRealVector(rightPart, false);
         RealVector solution = solver.solve(constants);
