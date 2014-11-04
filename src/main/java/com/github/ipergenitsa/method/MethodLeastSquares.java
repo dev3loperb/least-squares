@@ -23,6 +23,14 @@ public class MethodLeastSquares {
         return matrix;
     }
 
+    public double[] getExperimentalDataX() {
+        return experimentalDataX;
+    }
+
+    public double[] getExperimentalDataY() {
+        return experimentalDataY;
+    }
+
     private RealMatrix matrix;
 
     public MethodLeastSquares(int degreeOfPolynomial, double[] experimentalDataX, double[] experimentalDataY) {
