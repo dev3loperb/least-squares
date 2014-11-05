@@ -1,7 +1,7 @@
 package com.github.ipergenitsa.Frame;
 
 import com.github.ipergenitsa.data.DataStore;
-import com.github.ipergenitsa.data.function.CosinusWithError;
+import com.github.ipergenitsa.data.function.Function;
 import com.github.ipergenitsa.data.function.LineWithErrorFunction;
 import com.github.ipergenitsa.data.generator.*;
 
@@ -14,13 +14,15 @@ import java.awt.event.ActionEvent;
  * Created by ipergenitsa on 19.10.14.
  */
 public class MainFrame extends JFrame {
+    private static final String PARAMS_TEXT_FIELD_ID = "params";
+    private static final String PARAMS_TEXT_FIELD_VALUE = "params";
+    private static final String BUILD_BUTTON_NAME = "Build";
     private DataStore dataStore = new DataStore(1, new RandomXGenerator(-5, 5, 10),
             //new CosinusWithError(new GaussianErrorGenerator()));
             new LineWithErrorFunction(1, 2, new GaussianErrorGenerator()));
     private JPanel mainPanel;
     private DrawPanel drawPanel;
-    private VerticalComponentsPanel verticalComponentsPanel = new VerticalComponentsPanel();
-    private JButton buildButton;
+    private ComponentsPanel componentsPanel;
     private int height;
     private int width;
 
@@ -50,15 +52,19 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
-    private void initComponents() {
-        buildButton = new JButton("Build");
-        buildButton.addActionListener(new AbstractAction() {
+    private void initComponentsPanel() {
+        componentsPanel = new ComponentsPanel();
+        componentsPanel.addButton(BUILD_BUTTON_NAME, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String params = componentsPanel.getValueOfTextField(PARAMS_TEXT_FIELD_ID);
+                String[] paramsAsArray = params.split("\\,");
+                dataStore.setFunction(new LineWithErrorFunction(Double.valueOf(paramsAsArray[0]),
+                        Double.valueOf(paramsAsArray[1])));
                 draw();
             }
         });
-        verticalComponentsPanel.add(buildButton);
+        componentsPanel.addLabeledTextField(PARAMS_TEXT_FIELD_ID, PARAMS_TEXT_FIELD_VALUE);
     }
 
     private void draw() {
@@ -69,9 +75,9 @@ public class MainFrame extends JFrame {
     private void init() {
         initMainPanel(width, height);
         initDrawPanel((int) (width * 0.75), height - 2);
-        initComponents();
+        initComponentsPanel();
         mainPanel.add(drawPanel);
-        mainPanel.add(verticalComponentsPanel);
+        mainPanel.add(componentsPanel);
         mainPanel.setBorder(new LineBorder(Color.RED));
         drawPanel.setBorderColor(Color.GREEN);
         initFrame();

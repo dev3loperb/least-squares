@@ -37,4 +37,8 @@ public class DataStore {
     public Image getSolutionAsImage(int width, int height) {
         return solutionLeastSquares.solutionImage(width, height);
     }
+
+    public void setFunction(Function function) {
+        this.function = function;
+    }
 }

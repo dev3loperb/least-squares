@@ -11,9 +11,10 @@ import java.awt.image.BufferedImage;
  */
 public class SolutionLeastSquares {
 
+    private static final int POINT_SIZE = 4;
     private MethodLeastSquares methodLeastSquares;
     private double xMin = -10;
-    private double xMax = 10;
+    private double xMax = 20;
     private double yMin = -10;
     private double yMax = 10;
     private double step = 0.01;
@@ -92,7 +93,7 @@ public class SolutionLeastSquares {
         for (int i = 0; i < x.length; i++) {
             int xPoint = (int)coordinateToImageCoordinates(x[i], xMin, xMax, width);
             int yPoint = height - (int)coordinateToImageCoordinates(y[i], yMin, yMax, height);
-            graphics.drawArc(xPoint - 2, yPoint - 2, 4, 4, 0, 360);
+            graphics.drawArc(xPoint - (POINT_SIZE / 2), yPoint - (POINT_SIZE / 2), POINT_SIZE, POINT_SIZE, 0, 360);
         }
     }
 
@@ -100,5 +101,4 @@ public class SolutionLeastSquares {
                                                 double coordinateMax, int imageSize) {
         return ((coordinate - coordinateMin) / (coordinateMax - coordinateMin) * imageSize);
     }
-
 }
